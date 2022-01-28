@@ -62,8 +62,11 @@
                             <img src="https://via.placeholder.com/200" alt="product">
                             <div class="flex flex-col justify-between ml-6">
                                 <div>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non vel veritatis libero expedita accusantium atque neque impedit ea minus, obcaecati maiores corrupti animi velit cum ipsam natus assumenda consectetur reiciendis!</div>
-                                <div>
+                                {{-- <div>
                                     <span class="{{ 'status-' . Str::kebab($order->status->name) }} px-4 py-2 inline-block rounded-full text-sm">{{ $order->status->name }} @if ($order->status->name === 'Delivered') on Jan 12, 2022 @endif</span>
+                                </div> --}}
+                                <div>
+                                    <span class="{{ Status::tryFrom($order->status)->getStyles() }} px-4 py-2 inline-block rounded-full text-sm">{{ Status::tryFrom($order->status)->getName() }} @if (Status::tryFrom($order->status) === Status::DELIVERED) on Jan 12, 2022 @endif</span>
                                 </div>
                             </div>
 
@@ -73,6 +76,15 @@
                 </div> <!-- end order -->
             @endforeach
         </div> <!-- end orders -->
+
+        <div>
+            <h2 class="text-2xl">All Statuses</h2>
+            <ul class="mt-4">
+                @foreach (Status::cases() as $status)
+                    <li>{{ $status->getName() }}</li>
+                @endforeach
+            </ul>
+        </div>
     </div>
 </body>
 

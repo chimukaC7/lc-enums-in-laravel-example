@@ -15,10 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Status::factory()->create(['name' => 'Processing']);
-        Status::factory()->create(['name' => 'Shipped']);
-        Status::factory()->create(['name' => 'Delivered']);
-        Status::factory()->create(['name' => 'Cancelled']);
+        // Status::factory()->create(['name' => 'Processing']);
+        // Status::factory()->create(['name' => 'Shipped']);
+        // Status::factory()->create(['name' => 'Delivered']);
+        // Status::factory()->create(['name' => 'Cancelled']);
 
         Order::factory(20)->create();
     }

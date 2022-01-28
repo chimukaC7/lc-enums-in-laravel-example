@@ -1,7 +1,10 @@
 <?php
 
+use App\Enums\Status;
 use App\Models\Order;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\Rules\Enum;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +19,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome', [
-        'orders' => Order::with('status')->latest()->get(),
+        'orders' => Order::all(),
     ]);
+});
+
+Route::get('/create', function (Request $request) {
+    $request->validate([
+        'total' => 'required',
+        // 'status' => 'required|integer',
+        'status' => [new Enum(Status::class)],
+    ]);
+
+    Order::create([
+        'total' => $request->total,
+        'status' => $request->status,
+    ]);
+
+    return 'Created Order!';
 });

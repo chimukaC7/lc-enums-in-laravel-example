@@ -11,8 +11,8 @@ class Order extends Model
 
     protected $guarded = [];
 
-    public function status()
-    {
-        return $this->belongsTo(Status::class);
-    }
+    // public function status()
+    // {
+    //     return $this->belongsTo(Status::class);
+    // }
 }

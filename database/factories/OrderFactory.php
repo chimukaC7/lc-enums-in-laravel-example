@@ -16,7 +16,7 @@ class OrderFactory extends Factory
     {
         return [
             'total' => $this->faker->numberBetween(100, 100000),
-            'status_id' => $this->faker->numberBetween(1, 4),
+            'status' => $this->faker->numberBetween(1, 4),
             'created_at' => $this->faker->dateTimeBetween('-30 days', now()),
         ];
     }

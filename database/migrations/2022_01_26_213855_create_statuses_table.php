@@ -13,11 +13,11 @@ class CreateStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('statuses', function (Blueprint $table) {
-            $table->id();
-            $table->text('name');
-            $table->timestamps();
-        });
+        // Schema::create('statuses', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->text('name');
+        //     $table->timestamps();
+        // });
     }
 
     /**
@@ -27,6 +27,6 @@ class CreateStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statuses');
+        // Schema::dropIfExists('statuses');
     }
 }
