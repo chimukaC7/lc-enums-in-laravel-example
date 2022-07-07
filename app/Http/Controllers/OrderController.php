@@ -119,6 +119,90 @@ class OrderController extends Controller
          * */
         Carbon::createFromDate(1991, 7, 19)->diff(Carbon::now())->format('%y years, %m months and %d days');
         // => "23 years, 6 months and 26 days
+
+        //How to query between two dates using Laravel and Eloquent?
+        //The whereBetween method verifies that a column's value is between two values.
+
+        //--------------------------------------------------------------------------------------------------------------
+        $from = date('2018-01-01');
+        $to = date('2018-05-02');
+
+        //Since you are fetching based on a single column value you can simplify your query likewise:
+        Reservation::whereBetween('reservation_from', [$from, $to])->get();
+        //--------------------------------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------------------------------
+        Reservation::all()->filter(function($item) {
+            if (Carbon::now()->between($item->from, $item->to)) {
+                return $item;
+            }
+        });
+        //--------------------------------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------------------------------
+        $now = date('Y-m-d');
+        $reservations = Reservation::where('reservation_from', '>=', $now)
+            ->where('reservation_from', '<=', $to)
+            ->get();
+        //--------------------------------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------------------------------
+        $articles = Articles::where("created_at",">", Carbon::now()->subMonths(3))->get();
+        //--------------------------------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------------------------------
+        $from = Carbon::parse();
+        $to = Carbon::parse();
+        $from = Carbon::parse('2018-01-01')->toDateTimeString();
+        //Include all the results that fall in $to date as well
+        $to = Carbon::parse('2018-05-02')
+            ->addHours(23)
+            ->addMinutes(59)
+            ->addSeconds(59)
+            ->toDateTimeString();
+        //Or $to can also be like so
+        $to = Carbon::parse('2018-05-02')
+            ->addHours(24)
+            ->toDateTimeString();
+        Reservation::whereBetween('reservation_from', [$from, $to])->get();
+        //--------------------------------------------------------------------------------------------------------------
+
+
+        //To get the last 10 days record from now
+        $lastTenDaysRecord = ModelName::whereDateBetween('created_at',(new Carbon)->subDays(10)->startOfDay()->toDateString(),(new Carbon)->now()->endOfDay()->toDateString() )->get();
+
+        //To get the last 30 days record from now
+        $lastThirtyDaysRecord = ModelName::whereDateBetween('created_at',(new Carbon)->subDays(30)->startOfDay()->toDateString(),(new Carbon)->now()->endOfDay()->toDateString() )->get();
+
+
+        //--------------------------------------------------------------------------------------------------------------
+        $startDate = Carbon::createFromFormat('d/m/Y', '01/01/2021');
+        $endDate = Carbon::createFromFormat('d/m/Y', '06/01/2021');
+
+        $users = User::select('id', 'name', 'email', 'created_at')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->get();
+        //--------------------------------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------------------------------
+        $startDate = Carbon::createFromFormat('d/m/Y', '01/01/2021');
+        $endDate = Carbon::createFromFormat('d/m/Y', '06/01/2021');
+
+        $users = User::select('id', 'name', 'email', 'created_at')
+            ->where('created_at', '>=', $startDate)
+            ->where('created_at', '<=', $endDate)
+            ->get();
+        //--------------------------------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------------------------------
+        $startDate = '01/01/2021';
+        $endDate = '06/01/2021';
+
+        $users = User::select('id', 'name', 'email', 'paid_date')
+            ->whereDate('paid_date', '>=', $startDate)
+            ->whereDate('paid_date', '<=', $endDate)
+            ->get();
+        //--------------------------------------------------------------------------------------------------------------
     }
 
     /**
