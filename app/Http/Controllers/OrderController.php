@@ -225,6 +225,18 @@ class OrderController extends Controller
         $dt->isLeapYear();
         $dt->isSameDay(Carbon::now());
         //--------------------------------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------------------------------
+        $flights = Flight::whereDate('created_at', '2021-10-31')->get();
+
+        $flights = Flight::whereMonth('created_at', '10')->get();
+
+        $flights = Flight::whereDay('created_at', '30')->get();
+
+        $flights = Flight::whereYear('created_at', date('Y'))->get();
+
+        $flights = Flight::whereTime('created_at', '=', '12:10:00')->get();
+        //--------------------------------------------------------------------------------------------------------------
     }
 
     /**
