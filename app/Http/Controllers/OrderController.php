@@ -294,6 +294,13 @@ class OrderController extends Controller
         echo $anchorTime->diffInQuarters($currentTime);
         echo $anchorTime->diffInYears($currentTime);
         //--------------------------------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------------------------------
+        $timeTable= TimeTable::whereIn('group',$group->pluck('group'))
+            ->where('start_date',now()->format('d'))
+            ->where('start_hour',now()->addHour()->hour)
+            ->get();
+        //--------------------------------------------------------------------------------------------------------------
     }
 
 
