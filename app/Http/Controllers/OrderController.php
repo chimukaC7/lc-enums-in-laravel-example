@@ -128,6 +128,7 @@ class OrderController extends Controller
         $to = date('2018-05-02');
 
         //Since you are fetching based on a single column value you can simplify your query likewise:
+        //The whereBetween method verifies that a column's value is between two values.
         Reservation::whereBetween('reservation_from', [$from, $to])->get();
         //--------------------------------------------------------------------------------------------------------------
 
@@ -237,7 +238,75 @@ class OrderController extends Controller
 
         $flights = Flight::whereTime('created_at', '=', '12:10:00')->get();
         //--------------------------------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------------------------------
+        echo $dt->format('l jS \of F Y h:i:s A');//Tuesday 21st of April 2015 10:32:05 PM
+        //--------------------------------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------------------------------
+        echo $dt->diffInHours($future);
+        //--------------------------------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------------------------------
+        $dt = Carbon::now();
+        $dt->toTimeString(); //14:15:16
+        //--------------------------------------------------------------------------------------------------------------
+
+        //Using Getters and Setters--------------------------------------------------------------------------------------------------------------
+        $dt = Carbon::now();
+
+        var_dump($dt->year);
+        var_dump($dt->month);
+        var_dump($dt->day);
+        var_dump($dt->hour);
+        var_dump($dt->second);
+        var_dump($dt->dayOfWeek);
+        var_dump($dt->dayOfYear);
+        var_dump($dt->weekOfMonth);
+        var_dump($dt->daysInMonth);
+        //--------------------------------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------------------------------
+        $now = Carbon::now();
+
+        $start = Carbon::createFromTimeString('22:00');
+        $end = Carbon::createFromTimeString('08:00')->addDay();
+
+        if ($now->between($start, $end)) {
+            // ¯\_(ツ)_/¯
+        }
+        //--------------------------------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------------------------------
+        # Create anchor time and another date time to be compared
+        $anchorTime = Carbon::createFromFormat("Y-m-d H:i:s", "2021-03-01 00:00:00");
+        $currentTime = Carbon::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:00"));
+
+        echo $anchorTime->diffInSeconds($currentTime);
+        echo $anchorTime->diffInMinutes($currentTime);
+        echo $anchorTime->diffInHours($currentTime);
+        echo $anchorTime->diffInDays($currentTime);
+        echo $anchorTime->diffInDays($currentTime);
+        echo $anchorTime->diffInWeekdays($currentTime);
+        echo $anchorTime->diffInWeekendDays($currentTime);
+        echo $anchorTime->diffInWeeks($currentTime);
+        echo $anchorTime->diffInMonths($currentTime);
+        echo $anchorTime->diffInQuarters($currentTime);
+        echo $anchorTime->diffInYears($currentTime);
+        //--------------------------------------------------------------------------------------------------------------
     }
+
+
+    public function getOpensAttribute($value)
+    {
+        return Carbon::createFromFormat('H:i:s', $value)->format('H:i');
+    }
+    public function getClosesAttribute($value)
+    {
+        return Carbon::createFromFormat('H:i:s', $value)->format('H:i');
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
