@@ -301,6 +301,83 @@ class OrderController extends Controller
             ->where('start_hour',now()->addHour()->hour)
             ->get();
         //--------------------------------------------------------------------------------------------------------------
+
+        //Relative diff
+        //--------------------------------------------------------------------------------------------------------------
+        $user = User::factory()->create([
+            'created_at' => now()->subMinutes(5)->subSeconds(10)
+        ]);
+
+        echo $user->created_at->diffForHumans();
+        // Result: "5 minutes ago"
+        //--------------------------------------------------------------------------------------------------------------
+        $user = User::factory()->create([
+            'created_at' => now()->addMinutes(5)
+        ]);
+
+        $user->created_at->diffForHumans();
+        // Result: "4 minutes from now"
+        //--------------------------------------------------------------------------------------------------------------
+        //But if we don't care about which is earlier or later and we need to just know the difference,
+        // then we remove the words "from now" or "ago", with this second parameter:
+        $user->created_at->diffForHumans(now(), CarbonInterface::DIFF_ABSOLUTE);
+        // Result: "4 minutes"
+        //--------------------------------------------------------------------------------------------------------------
+
+        //How Many Parts To Show?
+        //--------------------------------------------------------------------------------------------------------------
+        //Actually, you can specify to provide up to six parts of the date to show:
+        //years
+        //months
+        //days
+        //hours
+        //minutes
+        //seconds
+        //For that, you would specify the fourth parameter, which gets the values from 1 to 6.
+        $user = User::factory()->create([
+            'created_at' => now()->subYears(2)->subMonths(3)->subDays(5)->subHours(10)
+        ]);
+
+        $user->created_at->diffForHumans(
+            now(),
+            Carbon\CarbonInterface::DIFF_RELATIVE_AUTO,
+            true,
+            3);
+        // Result: "2yrs 3mos 5d before"
+
+        $user->created_at->diffForHumans(
+            now(),
+            Carbon\CarbonInterface::DIFF_RELATIVE_AUTO,
+            true,
+            4);
+        // Result: "2yrs 3mos 5d 10h before"
+
+        $user->created_at->diffForHumans(
+            now(),
+            Carbon\CarbonInterface::DIFF_RELATIVE_AUTO,
+            true,
+            6);
+        // Result: "2yrs 3mos 5d 10h 16s before"
+        //--------------------------------------------------------------------------------------------------------------
+
+        //Array of Options, with More Options
+        // provide all the settings you want as an array.
+        //--------------------------------------------------------------------------------------------------------------
+        $user->created_at->diffForHumans(['parts' => 4]);
+        // Result: "2 years 3 months 5 days 10 hours ago"
+
+        $user->created_at->diffForHumans([
+            'parts' => 4,
+            'join' => ', '
+        ]);
+        // Result: "2 years, 3 months, 5 days, 10 hours ago"
+
+        $user->created_at->diffForHumans([
+            'parts' => 4,
+            'join' => ', ',
+            'short' => true]);
+        // Result: "2yrs, 3mos, 5d, 10h ago"
+        //--------------------------------------------------------------------------------------------------------------
     }
 
 
